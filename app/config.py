@@ -1,10 +1,12 @@
 import os
+import uuid
 
 
 class BaseConfig:
     """Base configuration"""
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECRET_KEY = uuid.uuid4().hex
 
 
 class DevelopmentConfig(BaseConfig):
