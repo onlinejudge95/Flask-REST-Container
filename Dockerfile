@@ -1,14 +1,20 @@
-FROM python:3.7.4-alpine
+FROM python:3.7.5-alpine
 
-WORKDIR /usr/src/app
+RUN apk update && \
+    apk add --virtual build-deps gcc python-dev musl-dev && \
+    apk add postgresql-dev && \
+    apk add netcat-openbsd
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY ./Pipfile .
+WORKDIR /usr/src/app
+
+COPY ./Pipfile Pipfile
 RUN pip install --upgrade pip pipenv && \
     pipenv install
 
-COPY . .
+COPY ./entrypoint.sh entrypoint.sh
+RUN chmod +x entrypoint.sh
 
-CMD pipenv run python manage.py run -h 0.0.0.0
+COPY . .

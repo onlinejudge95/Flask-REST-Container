@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    entrypoint: ["/usr/src/app/entrypoint.sh"]
     volumes:
       - .:/usr/src/app
     ports:
@@ -13,3 +14,15 @@ services:
       - FLASK_APP=app/__init__.py
       - FLASK_ENV=development
       - APP_SETTINGS=app.config.DevelopmentConfig
+    depends_on:
+      - users-db
+
+  users-db:
+    build:
+      context: ./app/db
+      dockerfile: Dockerfile
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
