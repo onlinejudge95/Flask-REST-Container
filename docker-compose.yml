@@ -11,9 +11,10 @@ services:
     ports:
       - 5000:5000
     environment:
-      - FLASK_APP=app/__init__.py
       - FLASK_ENV=development
       - APP_SETTINGS=app.config.DevelopmentConfig
+      - DATABASE_URL=postgresql://postgres:postgres@users-db:5432/users_dev
+      - DATABASE_TEST_URL=postgresql://postgres:postgres@users-db:5432/users_test
     depends_on:
       - users-db
 

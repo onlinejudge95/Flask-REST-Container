@@ -1,12 +1,14 @@
 from flask.cli import FlaskGroup
 
-from app import app, db
+from app import create_app, db
+from app.src.model.user import User
 
 
-cli = FlaskGroup()
+app = create_app()
+cli = FlaskGroup(create_app=create_app)
 
 
-@cli.command("init-db")
+@cli.command("init_db")
 def init_db():
     db.drop_all()
     db.create_all()
