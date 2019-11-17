@@ -17,6 +17,9 @@ def create_app():
     from app.src.routes.ping import bp
     app.register_blueprint(bp)
 
+    from app.src.routes.user import bp
+    app.register_blueprint(bp)
+
     @app.shell_context_processor
     def ctx():
         return {"app": app, "db": db}
