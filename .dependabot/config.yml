@@ -21,7 +21,7 @@ update_configs:
   # new versions are published to the dockerhub.
   - package_manager: "docker"
     directory: "dev.Dockerfile"
-    update_schedule: "live"
+    update_schedule: "weekly"
     target_branch: "master"
     default_reviewers:
       - "onlinejudge95"
@@ -38,7 +38,7 @@ update_configs:
   # new versions are published to the dockerhub.
   - package_manager: "docker"
     directory: "prod.Dockerfile"
-    update_schedule: "live"
+    update_schedule: "weekly"
     target_branch: "master"
     default_reviewers:
       - "onlinejudge95"
