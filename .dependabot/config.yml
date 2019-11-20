@@ -3,7 +3,7 @@ update_configs:
   # Keep Pipfile.lock up to date as soon as
   # new versions are published to the pypi
   - package_manager: "python"
-    directory: "Pipfile.lock"
+    directory: "/"
     update_schedule: "live"
     target_branch: "master"
     default_reviewers:
@@ -20,7 +20,7 @@ update_configs:
   # Keep dev.Dockerfile up to date as soon as
   # new versions are published to the dockerhub.
   - package_manager: "docker"
-    directory: "dev.Dockerfile"
+    directory: "/"
     update_schedule: "weekly"
     target_branch: "master"
     default_reviewers:
@@ -37,7 +37,7 @@ update_configs:
   # Keep prod.Dockerfile up to date as soon as
   # new versions are published to the dockerhub.
   - package_manager: "docker"
-    directory: "prod.Dockerfile"
+    directory: "/"
     update_schedule: "weekly"
     target_branch: "master"
     default_reviewers:
