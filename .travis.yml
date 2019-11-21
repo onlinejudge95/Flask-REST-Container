@@ -3,6 +3,10 @@ sudo: required
 services:
   - docker
 
+env:
+  global:
+    - REGISTRY_USER=onlinejudge95
+
 before_script:
   - docker pull onlinejudge95/flask-rest-container || true
 
