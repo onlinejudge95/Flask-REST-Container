@@ -55,3 +55,5 @@ deploy:
     - docker login -u _ -p $HEROKU_AUTH_TOKEN registry.heroku.com
     - docker push $HEROKU_REGISTRY_IMAGE
     - ./release.sh
+  only:
+    - master

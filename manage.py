@@ -16,7 +16,7 @@ def init_db():
 
 
 @cli.command("seed_db")
-def init_db():
+def seed_db():
     db.session.add(User(username="onlinejudge95", email="onlinejudge95@gmail.com"))
     db.session.add(User(username="onlinejudge94", email="onlinejudge94@gmail.com"))
     db.session.commit()
