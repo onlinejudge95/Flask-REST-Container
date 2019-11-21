@@ -19,7 +19,7 @@ build:
     - docker build
       --cache-from $IMAGE:latest
       --tag $IMAGE:latest
-      --file ./Dockerfile.prod
+      --file ./prod.Dockerfile
       "."
     - docker push $IMAGE:latest
 
