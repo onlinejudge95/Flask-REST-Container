@@ -14,13 +14,13 @@ def create_app():
 
     db.init_app(app)
 
-    from app.src.routes.ping import bp
+    from app.src.routes.ping import bp as ping_bp
 
-    app.register_blueprint(bp)
+    app.register_blueprint(ping_bp)
 
-    from app.src.routes.user import bp
+    from app.src.routes.user import bp as user_bp
 
-    app.register_blueprint(bp)
+    app.register_blueprint(user_bp)
 
     @app.shell_context_processor
     def ctx():
