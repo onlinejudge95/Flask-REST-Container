@@ -5,7 +5,7 @@ stages:
   - test
 
 variables:
-  IMAGE: ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}
+  IMAGE: registry.gitlab.com/onlinejudge95/flask-rest-container
 
 build:
   stage: build
@@ -19,7 +19,7 @@ build:
     - docker build
       --cache-from $IMAGE:latest
       --tag $IMAGE:latest
-      --file ./prod.Dockerfile
+      --file prod.Dockerfile
       "."
     - docker push $IMAGE:latest
 
