@@ -1,11 +1,45 @@
 image: docker:stable
 
 stages:
+  - unit_test
+  - functional_test
   - build
-  - test
+  - deploy
 
 variables:
   IMAGE: registry.gitlab.com/onlinejudge95/flask-rest-container
+
+unit_test:
+  stage: unit test
+  image: $IMAGE:latest
+  services:
+    - postgres:latest
+  variables:
+    POSTGRES_DB: users
+    POSTGRES_USER: runner
+    POSTGRES_PASSWORD: ""
+    DATABASE_TEST_URL: postgres://runner@postgres:5432/users
+  before_script:
+    - curl https://deepsource.io/cli | sh
+  script:
+    - pytest app/tests/unit/* --cov-report xml:coverage/xml/unit
+    - ./bin/deepsource report --analyzer test-coverage --key python --value-file .coverage/xml/unit/coverage.xml
+
+functional_test:
+  stage: functional test
+  image: $IMAGE:latest
+  services:
+    - postgres:latest
+  variables:
+    POSTGRES_DB: users
+    POSTGRES_USER: runner
+    POSTGRES_PASSWORD: ""
+    DATABASE_TEST_URL: postgres://runner@postgres:5432/users
+  before_script:
+    - curl https://deepsource.io/cli | sh
+  script:
+    - pytest app/tests/unit/* --cov-report xml:coverage/xml/functional
+    - ./bin/deepsource report --analyzer test-coverage --key python --value-file .coverage/xml/functional/coverage.xml
 
 build:
   stage: build
@@ -23,15 +57,20 @@ build:
       "."
     - docker push $IMAGE:latest
 
-test:
-  stage: test
-  image: $IMAGE:latest
+deploy:
+  stage: deploy
   services:
-    - postgres:latest
+    - docker:dind
   variables:
-    POSTGRES_DB: users
-    POSTGRES_USER: runner
-    POSTGRES_PASSWORD: ""
-    DATABASE_TEST_URL: postgres://runner@postgres:5432/users
+    DOCKER_DRIVER: overlay2
+    HEROKU_APP_NAME: rest-container-staging
+    HEROKU_REGISTRY_IMAGE: registry.heroku.com/${HEROKU_APP_NAME}/web
   script:
-    - pytest
+    - apk add --no-cache curl
+    - docker build
+      --tag $HEROKU_REGISTRY_IMAGE
+      --file prod.Dockerfile
+      "."
+    - docker login -u _ -p $HEROKU_AUTH_TOKEN registry.heroku.com
+    - docker push $HEROKU_REGISTRY_IMAGE
+    - ./release.sh
