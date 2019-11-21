@@ -64,3 +64,17 @@ def get_users():
     users = User.query.all()
 
     return [user.to_json() for user in users]
+
+
+def remove_user(public_id):
+    """
+    Service function to remove the given user.
+
+    This should be called by the DELETE /user/<public_id> route.
+
+    Parameters:
+    public_id (str): public identifier form the request object
+    """
+    user = User.query.filter_by(public_id=public_id).first()
+    db.session.delete(user)
+    db.session.commit()

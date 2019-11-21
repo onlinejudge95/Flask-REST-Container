@@ -55,6 +55,15 @@ class UserAPI(Resource):
         except KeyError:
             return {"status": "fail", "message": "User does not exist"}, 404
 
+    @staticmethod
+    def delete(public_id):
+        try:
+            user = service.get_user(public_id)
+            service.remove_user(user.get("public_id"))
+            return {"status": "success", "message": f"{user.get('email')} was removed!"}, 200
+        except KeyError:
+            return {"status": "fail", "message": "User does not exist"}, 404 
+
 
 api.add_resource(UserSetAPI, "/users")
 api.add_resource(UserAPI, "/users/<public_id>")
