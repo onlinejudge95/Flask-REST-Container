@@ -10,7 +10,7 @@ variables:
   IMAGE: registry.gitlab.com/onlinejudge95/flask-rest-container
 
 unit_test:
-  stage: unit test
+  stage: unit_test
   image: $IMAGE:latest
   services:
     - postgres:latest
@@ -26,7 +26,7 @@ unit_test:
     - ./bin/deepsource report --analyzer test-coverage --key python --value-file .coverage/xml/unit/coverage.xml
 
 functional_test:
-  stage: functional test
+  stage: functional_test
   image: $IMAGE:latest
   services:
     - postgres:latest
