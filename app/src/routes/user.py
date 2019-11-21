@@ -20,17 +20,24 @@ class UserSetAPI(Resource):
 
         try:
             service.create_new_user(data)
-            return {"status": "success", "message": f"{data.get('email')} was added!"}, 201
+            return (
+                {"status": "success", "message": f"{data.get('email')} was added!"},
+                201,
+            )
         except exc.IntegrityError:
             db.session.rollback()
             return {"status": "fail", "message": "Invalid payload."}, 400
         except ValueError:
-            return {"status": "fail", "message": "Sorry. That email already exists."}, 400
+            return (
+                {"status": "fail", "message": "Sorry. That email already exists."},
+                400,
+            )
 
     @staticmethod
     def get():
         users = service.get_users()
         return {"status": "success", "data": {"users": users}}, 200
+
 
 class UserAPI(Resource):
     @staticmethod
