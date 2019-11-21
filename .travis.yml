@@ -7,11 +7,11 @@ env:
   global:
     - REGISTRY_USER=onlinejudge95
 
-before_script:
-  - docker pull onlinejudge95/flask-rest-container || true
+# before_script:
+#   - docker pull onlinejudge95/flask-rest-container || true
 
 script:
-  - docker build --tag onlinejudge95/flask-rest-container ./prod.Dockerfile
+  - docker build --tag onlinejudge95/flask-rest-container prod.Dockerfile
 
 after_script:
   - docker images
