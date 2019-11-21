@@ -33,10 +33,7 @@ class UserSetAPI(Resource):
             return {"status": "fail", "message": "Invalid payload."}, 400
         except ValueError as e:
             return (
-                {
-                    "status": "fail",
-                    "message": str(e),
-                },
+                {"status": "fail", "message": str(e),},
                 400,
             )
 
@@ -84,15 +81,12 @@ class UserAPI(Resource):
             user = service.get_user(public_id)
             service.update_user(user.get("public_id"), data)
             return (
-                {"status": "success", "message": f"{public_id} was updated!",},
+                {"status": "success", "message": f"{public_id} was updated!"},
                 200,
             )
         except PermissionError as e:
             return (
-                {
-                    "status": "fail",
-                    "message": str(e),
-                },
+                {"status": "fail", "message": str(e),},
                 403,
             )
         except KeyError as e:
