@@ -1,11 +1,26 @@
 image: docker:stable
 
 stages:
-  - build
   - test
+  - build
+  - deploy
 
 variables:
   IMAGE: registry.gitlab.com/onlinejudge95/flask-rest-container
+
+test:
+  stage: test
+  image: $IMAGE:latest
+  services:
+    - postgres:latest
+  variables:
+    POSTGRES_DB: users
+    POSTGRES_USER: runner
+    POSTGRES_PASSWORD: ""
+    DATABASE_TEST_URL: postgres://runner@postgres:5432/users
+  script:
+    - pytest app/tests/unit/* --cov-report xml:coverage/xml/unit
+    - pytest app/tests/functional/* --cov-report xml:coverage/xml/functional
 
 build:
   stage: build
@@ -23,15 +38,20 @@ build:
       "."
     - docker push $IMAGE:latest
 
-test:
-  stage: test
-  image: $IMAGE:latest
+deploy:
+  stage: deploy
   services:
-    - postgres:latest
+    - docker:dind
   variables:
-    POSTGRES_DB: users
-    POSTGRES_USER: runner
-    POSTGRES_PASSWORD: ""
-    DATABASE_TEST_URL: postgres://runner@postgres:5432/users
+    DOCKER_DRIVER: overlay2
+    HEROKU_APP_NAME: rest-container-staging
+    HEROKU_REGISTRY_IMAGE: registry.heroku.com/${HEROKU_APP_NAME}/web
   script:
-    - pytest
+    - apk add --no-cache curl
+    - docker build
+      --tag $HEROKU_REGISTRY_IMAGE
+      --file prod.Dockerfile
+      "."
+    - docker login -u _ -p $HEROKU_AUTH_TOKEN registry.heroku.com
+    - docker push $HEROKU_REGISTRY_IMAGE
+    - ./release.sh

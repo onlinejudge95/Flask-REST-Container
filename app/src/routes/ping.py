@@ -9,7 +9,7 @@ api = Api(bp)
 class PingAPI(Resource):
     @staticmethod
     def get():
-        return {"status": "success", "message": "pong!"}
+        return {"status": "success", "message": "pong"}
 
 
 api.add_resource(PingAPI, "/ping")
