@@ -34,5 +34,5 @@ test:
     POSTGRES_PASSWORD: ""
     DATABASE_TEST_URL: postgres://runner@postgres:5432/users
   script:
-    - black project --check
+    - black app --check
     - pytest
