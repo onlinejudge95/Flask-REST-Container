@@ -25,7 +25,9 @@ To read the License please go [here](https://github.com/onlinejudge95/Flask-REST
 To read the Contributing guidelines please go [here](https://github.com/onlinejudge95/Flask-REST-Container/tree/master/.github/CONTRIBUTING.md)
 
 ## Feature Request / Bug Report
-To report a bug or request for a feature please go [here](https://github.com/onlinejudge95/Flask-REST-Container/tree/master/.github/CONTRIBUTING.md)
+To report a bug go [here](https://github.com/onlinejudge95/Flask-REST-Container/tree/master/.github/ISSUE_TEMPLATE/bug-report.md)
+
+To request for a feature please go [here](https://github.com/onlinejudge95/Flask-REST-Container/tree/master/.github/ISSUE_TEMPLATE/feature_request.md)
 
 ## Info
 This template aims to provide a boilerplate ready **REST API Server** using `Flask`.
