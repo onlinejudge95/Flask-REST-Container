@@ -18,6 +18,7 @@ def test_add_user(test_app, test_database):
     data = json.loads(response.data.decode())
     assert "success" in data["status"]
     assert "onlinejudge95@gmail.com was added!" in data["message"]
+    assert "public_id" in data["data"].keys()
 
 
 def test_add_user_empty_data(test_app, test_database):
@@ -74,12 +75,12 @@ def test_add_user_duplicate_email(test_app, test_database):
 
 
 def test_get_user(test_app, test_database):
-    user = utils.add_user(
+    public_id = utils.add_user(
         {"username": "onlinejudge95", "email": "onlinejudge95@gmail.com"}
     )
     client = test_app.test_client()
 
-    response = client.get(f"/users/{user.public_id}")
+    response = client.get(f"/users/{public_id}")
     assert response.status_code == 200
 
     data = json.loads(response.data.decode())
@@ -101,8 +102,12 @@ def test_get_user_invalid_id(test_app, test_database):
 
 def test_get_users(test_app, test_database):
     utils.recreate_db()
-    utils.add_user({"username": "mayankdcoder", "email": "mayankdcoder@gmail.com"})
-    utils.add_user({"username": "mayankdcoder1", "email": "mayankdcoder1@gmail.com"})
+    utils.add_user(
+        {"username": "mayankdcoder", "email": "mayankdcoder@gmail.com"}
+    )
+    utils.add_user(
+        {"username": "mayankdcoder1", "email": "mayankdcoder1@gmail.com"}
+    )
 
     client = test_app.test_client()
 

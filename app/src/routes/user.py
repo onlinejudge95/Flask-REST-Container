@@ -19,9 +19,13 @@ class UserSetAPI(Resource):
             return {"status": "fail", "message": "Empty payload"}, 400
 
         try:
-            service.create_new_user(data)
+            public_id = service.create_new_user(data)
             return (
-                {"status": "success", "message": f"{data.get('email')} was added!"},
+                {
+                    "status": "success",
+                    "message": f"{data.get('email')} was added!",
+                    "data": {"public_id": public_id},
+                },
                 201,
             )
         except exc.IntegrityError:
@@ -29,7 +33,10 @@ class UserSetAPI(Resource):
             return {"status": "fail", "message": "Invalid payload."}, 400
         except ValueError:
             return (
-                {"status": "fail", "message": "Sorry. That email already exists."},
+                {
+                    "status": "fail",
+                    "message": "Sorry. That email already exists.",
+                },
                 400,
             )
 

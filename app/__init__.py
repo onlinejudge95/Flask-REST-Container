@@ -8,6 +8,14 @@ db = SQLAlchemy()
 
 
 def create_app():
+    """
+    App factory for the server.
+
+    Receive an app instance for differnet env like development, testing etc
+
+    Returns:
+    flask.Flask: App instance
+    """
     app = Flask(__name__)
 
     app.config.from_object(os.getenv("APP_SETTINGS"))
