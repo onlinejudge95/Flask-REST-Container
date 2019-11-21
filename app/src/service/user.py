@@ -82,9 +82,9 @@ def remove_user(public_id):
 
 def update_user(public_id, data):
     """
-    Service function to remove the given user.
+    Service function to update the given user, with given data.
 
-    This should be called by the DELETE /user/<public_id> route.
+    This should be called by the PUT /user/<public_id> route.
 
     Parameters:
     public_id (str): public identifier form the request object
@@ -100,4 +100,3 @@ def update_user(public_id, data):
             setattr(user, k, data[k])
 
     db.session.commit()
-    return user.to_json()

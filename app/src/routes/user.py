@@ -82,7 +82,7 @@ class UserAPI(Resource):
                 raise PermissionError("Can not modify public_id attribute")
 
             user = service.get_user(public_id)
-            updated_user = service.update_user(user.get("public_id"), data)
+            service.update_user(user.get("public_id"), data)
             return (
                 {"status": "success", "message": f"{public_id} was updated!",},
                 200,
