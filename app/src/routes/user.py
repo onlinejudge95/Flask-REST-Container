@@ -1,7 +1,6 @@
 import os
 
 from flask import Blueprint, request
-from flask_admin.contrib.sqla import ModelView
 from flask_restful import Api, Resource
 from sqlalchemy import exc
 
