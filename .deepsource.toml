@@ -1,0 +1,25 @@
+version = 1
+
+test_patterns = [
+  "*/tests/**"
+]
+
+exclude_patterns = [
+  ".github/",
+  "*ignore",
+  "*Dockerfile",
+  "*yml",
+  "*sh",
+  "Pipfile*",
+  "*.ini",
+  "*.md",
+  "*.txt"
+]
+
+[[analyzers]]
+name = "python"
+enabled = true
+
+  [analyzers.meta]
+  runtime_version = "3.x.x"
+  

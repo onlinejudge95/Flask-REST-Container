@@ -1,0 +1,52 @@
+version: 1
+update_configs:
+  # Keep Pipfile.lock up to date as soon as
+  # new versions are published to the pypi
+  - package_manager: "python"
+    directory: "/"
+    update_schedule: "live"
+    target_branch: "master"
+    default_reviewers:
+      - "onlinejudge95"
+    default_assignees:
+      - "dependabot"
+    default_labels:
+      - "dependencies"
+      - "dependabot"
+    allowed_updates:
+      - match:
+          update_type: "security"
+
+  # Keep dev.Dockerfile up to date as soon as
+  # new versions are published to the dockerhub.
+  - package_manager: "docker"
+    directory: "/"
+    update_schedule: "weekly"
+    target_branch: "master"
+    default_reviewers:
+      - "onlinejudge95"
+    default_assignees:
+      - "dependabot"
+    default_labels:
+      - "dependencies"
+      - "dependabot"
+    allowed_updates:
+      - match:
+          update_type: "security"
+
+  # Keep prod.Dockerfile up to date as soon as
+  # new versions are published to the dockerhub.
+  - package_manager: "docker"
+    directory: "/"
+    update_schedule: "weekly"
+    target_branch: "master"
+    default_reviewers:
+      - "onlinejudge95"
+    default_assignees:
+      - "dependabot"
+    default_labels:
+      - "dependencies"
+      - "dependabot"
+    allowed_updates:
+      - match:
+          update_type: "security"
