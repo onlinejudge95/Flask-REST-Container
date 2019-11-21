@@ -1,7 +1,6 @@
 import json
-import os
 
-from app import create_app, utils
+from app import utils
 
 
 def test_add_user(test_app, test_database):
