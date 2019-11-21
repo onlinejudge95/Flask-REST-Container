@@ -3,6 +3,9 @@ sudo: required
 services:
   - docker
 
+before_script:
+  - docker pull onlinejudge95/flask-rest-container || true
+
 script:
   - docker build --tag onlinejudge95/flask-rest-container --file prod.Dockerfile .
 
@@ -16,4 +19,4 @@ deploy:
   provider: script
   script: docker push onlinejudge95/flask-rest-container
   on:
-    branch: master
+    all_branches: true
