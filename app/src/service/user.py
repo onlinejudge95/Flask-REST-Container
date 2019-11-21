@@ -26,7 +26,7 @@ def create_new_user(data):
         db.session.commit()
 
         return new_user.public_id
-    raise ValueError("User already exists")
+    raise ValueError("Sorry. That email already exists.")
 
 
 def get_user(public_id):
@@ -47,7 +47,7 @@ def get_user(public_id):
     user = User.query.filter_by(public_id=public_id).first()
 
     if not user:
-        raise KeyError("Invalid identifier")
+        raise KeyError("User does not exist")
 
     return user.to_json()
 
@@ -78,3 +78,26 @@ def remove_user(public_id):
     user = User.query.filter_by(public_id=public_id).first()
     db.session.delete(user)
     db.session.commit()
+
+
+def update_user(public_id, data):
+    """
+    Service function to remove the given user.
+
+    This should be called by the DELETE /user/<public_id> route.
+
+    Parameters:
+    public_id (str): public identifier form the request object
+    data (dict): Key value pairs to modify
+    """
+    user = User.query.filter_by(public_id=public_id).first()
+
+    for k, v in user.to_json().items():
+        if k == "public_id":
+            continue
+
+        if k in data.keys():
+            setattr(user, k, data[k])
+
+    db.session.commit()
+    return user.to_json()

@@ -31,11 +31,11 @@ class UserSetAPI(Resource):
         except exc.IntegrityError:
             db.session.rollback()
             return {"status": "fail", "message": "Invalid payload."}, 400
-        except ValueError:
+        except ValueError as e:
             return (
                 {
                     "status": "fail",
-                    "message": "Sorry. That email already exists.",
+                    "message": str(e),
                 },
                 400,
             )
@@ -52,8 +52,8 @@ class UserAPI(Resource):
         try:
             user = service.get_user(public_id)
             return {"status": "success", "data": user}, 200
-        except KeyError:
-            return {"status": "fail", "message": "User does not exist"}, 404
+        except KeyError as e:
+            return {"status": "fail", "message": str(e)}, 404
 
     @staticmethod
     def delete(public_id):
@@ -67,8 +67,36 @@ class UserAPI(Resource):
                 },
                 200,
             )
-        except KeyError:
-            return {"status": "fail", "message": "User does not exist"}, 404
+        except KeyError as e:
+            return {"status": "fail", "message": str(e)}, 404
+
+    @staticmethod
+    def put(public_id):
+        data = request.get_json()
+
+        if not data:
+            return {"status": "fail", "message": "Empty payload"}, 400
+
+        try:
+            if "public_id" in data.keys():
+                raise PermissionError("Can not modify public_id attribute")
+
+            user = service.get_user(public_id)
+            updated_user = service.update_user(user.get("public_id"), data)
+            return (
+                {"status": "success", "message": f"{public_id} was updated!",},
+                200,
+            )
+        except PermissionError as e:
+            return (
+                {
+                    "status": "fail",
+                    "message": str(e),
+                },
+                403,
+            )
+        except KeyError as e:
+            return {"status": "fail", "message": str(e)}, 404
 
 
 api.add_resource(UserSetAPI, "/users")
