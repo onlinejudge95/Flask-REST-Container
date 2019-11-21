@@ -11,7 +11,7 @@ before_script:
   - docker pull onlinejudge95/flask-rest-container || true
 
 script:
-  - docker build --pull --cache-from onlinejudge95/flask-rest-container --tag onlinejudge95/flask-rest-container ./prod.Dockerfile
+  - docker build --tag onlinejudge95/flask-rest-container ./prod.Dockerfile
 
 after_script:
   - docker images
