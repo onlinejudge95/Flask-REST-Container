@@ -8,11 +8,10 @@ def test_add_user(test_app, test_database):
 
     response = client.post(
         "/users",
-        data=json.dumps({
-            "username": "onlinejudge95",
-            "email": "onlinejudge95@gmail.com",
-        }),
-        content_type="application/json"
+        data=json.dumps(
+            {"username": "onlinejudge95", "email": "onlinejudge95@gmail.com",}
+        ),
+        content_type="application/json",
     )
     assert response.status_code == 201
 
@@ -25,9 +24,7 @@ def test_add_user_empty_data(test_app, test_database):
     client = test_app.test_client()
 
     response = client.post(
-        "/users",
-        data=json.dumps({}),
-        content_type="application/json"
+        "/users", data=json.dumps({}), content_type="application/json"
     )
     assert response.status_code == 400
 
@@ -41,10 +38,8 @@ def test_add_user_invalid_payload(test_app, test_database):
 
     response = client.post(
         "/users",
-        data=json.dumps({
-            "email": "mayankdcoder@gmail.com"
-        }),
-        content_type="application/json"
+        data=json.dumps({"email": "mayankdcoder@gmail.com"}),
+        content_type="application/json",
     )
     assert response.status_code == 400
 
@@ -58,20 +53,18 @@ def test_add_user_duplicate_email(test_app, test_database):
 
     client.post(
         "/users",
-        data=json.dumps({
-            "username": "onlinejudge95",
-            "email": "onlinejudge95@gmail.com"
-        }),
-        content_type="application/json"
+        data=json.dumps(
+            {"username": "onlinejudge95", "email": "onlinejudge95@gmail.com"}
+        ),
+        content_type="application/json",
     )
 
     response = client.post(
         "/users",
-        data=json.dumps({
-            "username": "onlinejudge95",
-            "email": "onlinejudge95@gmail.com"
-        }),
-        content_type="application/json"
+        data=json.dumps(
+            {"username": "onlinejudge95", "email": "onlinejudge95@gmail.com"}
+        ),
+        content_type="application/json",
     )
     assert response.status_code == 400
 
@@ -81,7 +74,9 @@ def test_add_user_duplicate_email(test_app, test_database):
 
 
 def test_get_user(test_app, test_database):
-    user = utils.add_user({"username": "onlinejudge95", "email": "onlinejudge95@gmail.com"})
+    user = utils.add_user(
+        {"username": "onlinejudge95", "email": "onlinejudge95@gmail.com"}
+    )
     client = test_app.test_client()
 
     response = client.get(f"/users/{user.public_id}")

@@ -17,11 +17,11 @@ class User(db.Model):
     def __init__(self, username, email):
         self.username = username
         self.email = email
-    
+
     def to_json(self):
         return {
             "public_id": self.public_id,
             "username": self.username,
             "email": self.email,
-            "active": self.active
+            "active": self.active,
         }
