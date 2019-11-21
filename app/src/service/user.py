@@ -92,11 +92,7 @@ def update_user(public_id, data):
     """
     user = User.query.filter_by(public_id=public_id).first()
 
-    for k, v in user.to_json().items():
-        if k == "public_id":
-            continue
-
-        if k in data.keys():
-            setattr(user, k, data[k])
+    for k in data.keys():
+        setattr(user, k, data[k])
 
     db.session.commit()
