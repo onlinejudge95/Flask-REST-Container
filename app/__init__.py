@@ -1,10 +1,8 @@
 import os
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 
-
-db = SQLAlchemy()
+from app import extensions as ext
 
 
 def create_app():
@@ -20,7 +18,9 @@ def create_app():
 
     app.config.from_object(os.getenv("APP_SETTINGS"))
 
-    db.init_app(app)
+    ext.db.init_app(app)
+    if os.getenv("FLASK_ENV") == "development":
+        ext.admin.init_app(app)
 
     from app.src.routes.ping import bp as ping_bp
 

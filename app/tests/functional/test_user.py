@@ -1,6 +1,7 @@
 import json
+import os
 
-from app import utils
+from app import create_app, utils
 
 
 def test_add_user(test_app, test_database):
@@ -221,3 +222,29 @@ def test_update_user_empty_json(test_app, test_database):
     assert resp.status_code == 400
     assert "Empty payload" in data["message"]
     assert "fail" in data["status"]
+
+
+def test_admin_view_dev():
+    os.environ["FLASK_ENV"] = "development"
+    assert os.getenv("FLASK_ENV") == "development"
+    app = create_app()
+    app.config.from_object("app.config.TestingConfig")
+    with app.app_context():
+        utils.recreate_db()
+        client = app.test_client()
+        resp = client.get("/admin/user/")
+        assert resp.status_code == 200
+    assert os.getenv("FLASK_ENV") == "development"
+
+
+def test_admin_view_prod():
+    os.environ["FLASK_ENV"] = "production"
+    assert os.getenv("FLASK_ENV") == "production"
+    app = create_app()
+    app.config.from_object("app.config.TestingConfig")
+    with app.app_context():
+        utils.recreate_db()
+        client = app.test_client()
+        resp = client.get("/admin/user/")
+        assert resp.status_code == 404
+    assert os.getenv("FLASK_ENV") == "production"

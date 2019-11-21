@@ -1,8 +1,10 @@
+import os
 import uuid
 
+from flask_admin.contrib.sqla import ModelView
 from sqlalchemy.sql import func
 
-from app import db
+from app.extensions import db
 
 
 class User(db.Model):

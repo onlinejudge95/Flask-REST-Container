@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 black = "==19.10b0"
+flask-admin = "==1.5.4"
 
 [packages]
 flask = "==1.1.1"
