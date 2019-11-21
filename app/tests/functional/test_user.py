@@ -102,8 +102,12 @@ def test_get_user_invalid_id(test_app, test_database):
 
 def test_get_users(test_app, test_database):
     utils.recreate_db()
-    utils.add_user({"username": "mayankdcoder", "email": "mayankdcoder@gmail.com"})
-    utils.add_user({"username": "mayankdcoder1", "email": "mayankdcoder1@gmail.com"})
+    utils.add_user(
+        {"username": "mayankdcoder", "email": "mayankdcoder@gmail.com"}
+    )
+    utils.add_user(
+        {"username": "mayankdcoder1", "email": "mayankdcoder1@gmail.com"}
+    )
 
     client = test_app.test_client()
 

@@ -33,7 +33,10 @@ class UserSetAPI(Resource):
             return {"status": "fail", "message": "Invalid payload."}, 400
         except ValueError:
             return (
-                {"status": "fail", "message": "Sorry. That email already exists."},
+                {
+                    "status": "fail",
+                    "message": "Sorry. That email already exists.",
+                },
                 400,
             )
 
