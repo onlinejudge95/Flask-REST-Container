@@ -18,14 +18,9 @@ test:
     POSTGRES_USER: runner
     POSTGRES_PASSWORD: ""
     DATABASE_TEST_URL: postgres://runner@postgres:5432/users
-  before_script:
-    - apk add --update curl && rm -rf /var/cache/apk/*
-    - curl https://deepsource.io/cli | sh
   script:
     - pytest app/tests/unit/* --cov-report xml:coverage/xml/unit
-    - ./bin/deepsource report --analyzer test-coverage --key python --value-file .coverage/xml/unit/coverage.xml
     - pytest app/tests/functional/* --cov-report xml:coverage/xml/functional
-    - ./bin/deepsource report --analyzer test-coverage --key python --value-file .coverage/xml/functional/coverage.xml
 
 build:
   stage: build
