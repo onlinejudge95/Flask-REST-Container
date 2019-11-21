@@ -1,12 +1,9 @@
-import os
-
 from flask import Blueprint, request
 from flask_restful import Api, Resource
 from sqlalchemy import exc
 
 from app.extensions import db
 from app.src.service import user as service
-from app.src.model.user import User
 
 
 bp = Blueprint("users", __name__)
