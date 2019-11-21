@@ -35,4 +35,15 @@ def recreate_db():
 
 
 def user_not_exists(email):
+    """
+    Utility function to check if the user exists.
+
+    Use this when you need to make sure whether a user already exists
+
+    Parameters:
+    email (str): email field form the request object
+
+    Returns:
+    bool: Whether the user already exists
+    """
     return User.query.filter_by(email=email).first() is None
