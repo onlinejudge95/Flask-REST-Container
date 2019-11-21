@@ -8,3 +8,12 @@ script:
 
 after_script:
   - docker images
+
+before_deploy:
+  - docker login --username "$REGISTRY_USER" --password "$REGISTRY_PASS"
+
+deploy:
+  provider: script
+  script: docker push onlinejudge95/flask-rest-container
+  on:
+    branch: master

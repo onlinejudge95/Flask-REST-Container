@@ -1,3 +1,5 @@
+.dependabot/
+.github/
 .pytest_cache/
 .vscode/
 
