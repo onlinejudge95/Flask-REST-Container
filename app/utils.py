@@ -1,4 +1,4 @@
-from app import db
+from app.extensions import db
 from app.src.model.user import User
 
 

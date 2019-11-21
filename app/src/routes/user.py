@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_restful import Api, Resource
 from sqlalchemy import exc
 
-from app import db
+from app.extensions import db
 from app.src.service import user as service
 
 

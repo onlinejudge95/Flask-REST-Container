@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f006a48725b512c81b0863502d2ef48d3d8e5ca4ba5803ab3886c2d78ec43e46"
+            "sha256": "7db1bdaac222732a19ca756ad567d636f4627fe5f0a0469d01e2b3d8fbf8c49a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -81,6 +81,13 @@
             ],
             "index": "pypi",
             "version": "==1.1.1"
+        },
+        "flask-admin": {
+            "hashes": [
+                "sha256:ed7b256471dba0f3af74f1a315733c3b36244592f2002c3bbdc65fd7c2aa807a"
+            ],
+            "index": "pypi",
+            "version": "==1.5.4"
         },
         "flask-restful": {
             "hashes": [
@@ -177,10 +184,10 @@
         },
         "pluggy": {
             "hashes": [
-                "sha256:0db4b7601aae1d35b4a033282da476845aa19185c1e6964b25cf324b5e4ec3e6",
-                "sha256:fa5fa1622fa6dd5c030e9cad086fa19ef6a0cf6d7a2d12318e10cb49d6d68f34"
+                "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0",
+                "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"
             ],
-            "version": "==0.13.0"
+            "version": "==0.13.1"
         },
         "psycopg2-binary": {
             "hashes": [
@@ -283,6 +290,13 @@
                 "sha256:e5f4a1f98b52b18a93da705a7458e55afb26f32bff83ff5d19189f92462d65c4"
             ],
             "version": "==0.16.0"
+        },
+        "wtforms": {
+            "hashes": [
+                "sha256:0cdbac3e7f6878086c334aa25dc5a33869a3954e9d1e015130d65a69309b3b61",
+                "sha256:e3ee092c827582c50877cdbd49e9ce6d2c5c1f6561f849b3b068c1b8029626f1"
+            ],
+            "version": "==2.2.1"
         },
         "zipp": {
             "hashes": [

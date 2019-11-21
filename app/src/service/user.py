@@ -1,4 +1,5 @@
-from app import db, utils
+from app import utils
+from app.extensions import db
 from app.src.model.user import User
 
 
