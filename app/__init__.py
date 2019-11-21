@@ -19,11 +19,6 @@ def create_app():
     app.config.from_object(os.getenv("APP_SETTINGS"))
 
     ext.db.init_app(app)
-    if os.getenv("FLASK_ENV") == "development":
-        from flask_admin import Admin
-
-        admin = Admin(template_mode="bootstrap3")
-        admin.init_app(app)
 
     from app.src.routes.ping import bp as ping_bp
 
