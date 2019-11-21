@@ -96,30 +96,30 @@ class UserAPI(Resource):
             return {"status": "fail", "message": str(e)}, 404
 
 
-class UserAdminView(ModelView):
-    column_searchable_list = ("username", "email", "public_id")
-    column_editable_list = (
-        "username",
-        "email",
-        "created_date",
-    )
-    column_filters = (
-        "username",
-        "email",
-    )
-    column_sortable_list = (
-        "username",
-        "email",
-        "active",
-        "created_date",
-        "public_id",
-    )
-    column_default_sort = ("created_date", True)
-
-
 api.add_resource(UserSetAPI, "/users")
 api.add_resource(UserAPI, "/users/<public_id>")
 
 
 if os.getenv("FLASK_ENV") == "development":
+    from flask_admin.contrib.sqla import ModelView
+    class UserAdminView(ModelView):
+        column_searchable_list = ("username", "email", "public_id")
+        column_editable_list = (
+            "username",
+            "email",
+            "created_date",
+        )
+        column_filters = (
+            "username",
+            "email",
+        )
+        column_sortable_list = (
+            "username",
+            "email",
+            "active",
+            "created_date",
+            "public_id",
+        )
+        column_default_sort = ("created_date", True)
+
     admin.add_view(UserAdminView(User, db.session))
