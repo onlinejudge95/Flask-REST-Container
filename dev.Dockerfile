@@ -12,7 +12,7 @@ WORKDIR /usr/src/app
 
 COPY ./Pipfile Pipfile
 RUN pip install --upgrade pip pipenv && \
-    pipenv install
+    pipenv install --dev
 
 COPY ./entrypoint.sh entrypoint.sh
 RUN chmod +x entrypoint.sh
