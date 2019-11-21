@@ -125,7 +125,9 @@ def test_get_users(test_app, test_database):
 
 def test_remove_user(test_app, test_database):
     utils.recreate_db()
-    public_id = utils.add_user({"username": "removed", "email": "remove@gmail.com"})
+    public_id = utils.add_user(
+        {"username": "removed", "email": "remove@gmail.com"}
+    )
     client = test_app.test_client()
     resp_one = client.get("/users")
     data = json.loads(resp_one.data.decode())
@@ -134,8 +136,8 @@ def test_remove_user(test_app, test_database):
     resp_two = client.delete(f"/users/{public_id}")
     data = json.loads(resp_two.data.decode())
     assert resp_two.status_code == 200
-    assert 'remove@gmail.com was removed!' in data['message']
-    assert 'success' in data['status']
+    assert "remove@gmail.com was removed!" in data["message"]
+    assert "success" in data["status"]
     resp_three = client.get("/users")
     data = json.loads(resp_three.data.decode())
     assert resp_three.status_code == 200
