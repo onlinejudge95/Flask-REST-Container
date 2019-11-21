@@ -21,6 +21,7 @@ def create_app():
     ext.db.init_app(app)
     if os.getenv("FLASK_ENV") == "development":
         from flask_admin import Admin
+
         admin = Admin(template_mode="bootstrap3")
         admin.init_app(app)
 

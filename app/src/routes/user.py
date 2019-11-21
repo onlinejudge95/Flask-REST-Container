@@ -102,6 +102,7 @@ api.add_resource(UserAPI, "/users/<public_id>")
 
 if os.getenv("FLASK_ENV") == "development":
     from flask_admin.contrib.sqla import ModelView
+
     class UserAdminView(ModelView):
         column_searchable_list = ("username", "email", "public_id")
         column_editable_list = (
