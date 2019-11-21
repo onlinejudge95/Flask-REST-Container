@@ -32,6 +32,6 @@ def create_app():
 
     @app.shell_context_processor
     def ctx():
-        return {"app": app, "db": db}
+        return {"app": app, "db": ext.db}
 
     return app
