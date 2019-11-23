@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from flask_restful import Api, Resource
 from sqlalchemy import exc
 
+from app import exceptions
 from app.extensions import db
 from app.src.service import user as service
 
@@ -31,7 +32,7 @@ class UserSetAPI(Resource):
         except exc.IntegrityError:
             db.session.rollback()
             return {"status": "fail", "message": "Invalid payload."}, 400
-        except ValueError as e:
+        except exceptions.UserExistsError as e:
             return (
                 {"status": "fail", "message": str(e),},
                 400,
@@ -49,7 +50,7 @@ class UserAPI(Resource):
         try:
             user = service.get_user(public_id)
             return {"status": "success", "data": user}, 200
-        except KeyError as e:
+        except exceptions.UserDoesNotExistsError as e:
             return {"status": "fail", "message": str(e)}, 404
 
     @staticmethod
@@ -64,32 +65,28 @@ class UserAPI(Resource):
                 },
                 200,
             )
-        except KeyError as e:
+        except exceptions.UserDoesNotExistsError as e:
             return {"status": "fail", "message": str(e)}, 404
 
     @staticmethod
     def put(public_id):
         data = request.get_json()
 
-        if not data:
-            return {"status": "fail", "message": "Empty payload"}, 400
-
         try:
-            if "public_id" in data.keys():
-                raise PermissionError("Can not modify public_id attribute")
-
             user = service.get_user(public_id)
             service.update_user(user.get("public_id"), data)
             return (
                 {"status": "success", "message": f"{public_id} was updated!"},
                 200,
             )
-        except PermissionError as e:
+        except exceptions.IllegalArgumentError as e:
+            return {"status": "fail", "message": str(e)}, 400
+        except exceptions.ForbiddenOperationError as e:
             return (
                 {"status": "fail", "message": str(e),},
                 403,
             )
-        except KeyError as e:
+        except exceptions.UserDoesNotExistsError as e:
             return {"status": "fail", "message": str(e)}, 404
 
 

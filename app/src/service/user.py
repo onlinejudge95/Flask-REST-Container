@@ -1,4 +1,4 @@
-from app import utils
+from app import utils, exceptions as exc
 from app.extensions import db
 from app.src.model.user import User
 
@@ -27,7 +27,7 @@ def create_new_user(data):
         db.session.commit()
 
         return new_user.public_id
-    raise ValueError("Sorry. That email already exists.")
+    raise exc.UserExistsError(f"User with email {email} already exists")
 
 
 def get_user(public_id):
@@ -48,7 +48,9 @@ def get_user(public_id):
     user = User.query.filter_by(public_id=public_id).first()
 
     if not user:
-        raise KeyError("User does not exist")
+        raise exc.UserDoesNotExistsError(
+            f"User with id {public_id} does not exists"
+        )
 
     return user.to_json()
 
@@ -77,6 +79,12 @@ def remove_user(public_id):
     public_id (str): public identifier form the request object
     """
     user = User.query.filter_by(public_id=public_id).first()
+
+    if not user:
+        raise exc.UserDoesNotExistsError(
+            f"User with id {public_id} does not exists"
+        )
+
     db.session.delete(user)
     db.session.commit()
 
@@ -91,7 +99,18 @@ def update_user(public_id, data):
     public_id (str): public identifier form the request object
     data (dict): Key value pairs to modify
     """
+    if not data:
+        raise exc.IllegalArgumentError("Empty payload")
+
+    if "public_id" in data.keys():
+        raise exc.ForbiddenOperationError("Can not modify public_id attribute")
+
     user = User.query.filter_by(public_id=public_id).first()
+
+    if not user:
+        raise exc.UserDoesNotExistsError(
+            f"User with id {public_id} does not exists"
+        )
 
     for k in data.keys():
         setattr(user, k, data[k])
