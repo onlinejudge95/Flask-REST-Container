@@ -1,0 +1,13 @@
+name: Greetings
+
+on: [pull_request, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: "Thanks for raising a Issue, while we get the author to respond, you can check for Bug Report template, and see if your issue confirms to the same, in case of reporting a bug."
+          pr-message: "Thanks for raising a Pull Request, while we get the author to respond, make sure all checks are passing and your code confirm to the coding guidelines."

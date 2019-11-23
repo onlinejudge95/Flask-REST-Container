@@ -53,6 +53,7 @@ If the branch that is currently running is **master** then the last **deploy** s
 
 ## Containers
 * For *Visual Studio Code*
+
 If you are using *Visual Studio Code* you can directly launch the container by the following.
 There is a `.devcontainer/devcontainer.json` file provided, use this to open the folder in a container.
 * For *Else*
@@ -76,7 +77,6 @@ There is a `.devcontainer/devcontainer.json` file provided, use this to open the
 6. For creating a new database run
     ```
     $ docker-compose exec users pipenv run python manage.py init_db
-    ```
     ```
 7. For seeding a new database run
     ```
