@@ -71,7 +71,10 @@ def test_add_user_duplicate_email(test_app, test_database):
 
     data = json.loads(response.data.decode())
     assert "fail" in data["status"]
-    assert "Sorry. That email already exists." in data["message"]
+    assert (
+        "User with email onlinejudge95@gmail.com already exists"
+        in data["message"]
+    )
 
 
 def test_get_user(test_app, test_database):
@@ -97,7 +100,7 @@ def test_get_user_invalid_id(test_app, test_database):
 
     data = json.loads(response.data.decode())
     assert "fail" in data["status"]
-    assert "User does not exist" in data["message"]
+    assert "User with id 123 does not exists" in data["message"]
 
 
 def test_get_users(test_app, test_database):
@@ -149,7 +152,7 @@ def test_remove_user_incorrect_id(test_app, test_database):
     resp = client.delete("/users/999")
     data = json.loads(resp.data.decode())
     assert resp.status_code == 404
-    assert "User does not exist" in data["message"]
+    assert "User with id 999 does not exists" in data["message"]
     assert "fail" in data["status"]
 
 
@@ -202,7 +205,7 @@ def test_update_user_does_not_exist(test_app, test_database):
     )
     data = json.loads(resp.data.decode())
     assert resp.status_code == 404
-    assert "User does not exist" in data["message"]
+    assert "User with id 999 does not exists" in data["message"]
     assert "fail" in data["status"]
 
 
