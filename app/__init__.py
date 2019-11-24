@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 
-from app import extensions as ext
+from app import extensions as ext, utils
 
 
 def create_app():
@@ -14,6 +14,8 @@ def create_app():
     Returns:
     flask.Flask: App instance
     """
+    utils.init_logger()
+
     app = Flask(__name__)
 
     app.config.from_object(os.getenv("APP_SETTINGS"))

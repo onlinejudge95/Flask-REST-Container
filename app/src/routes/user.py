@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, current_app as app, request
 from flask_restful import Api, Resource
 from sqlalchemy import exc
 
@@ -21,6 +21,8 @@ class UserSetAPI(Resource):
 
         try:
             public_id = service.create_new_user(data)
+            app.logger.debug(f"User with {public_id} created")
+
             return (
                 {
                     "status": "success",
@@ -31,8 +33,13 @@ class UserSetAPI(Resource):
             )
         except exc.IntegrityError:
             db.session.rollback()
+            app.logger.warning("Rolling back db session")
+
             return {"status": "fail", "message": "Invalid payload."}, 400
+
         except exceptions.UserExistsError as e:
+            app.logger.warning(str(e))
+
             return (
                 {"status": "fail", "message": str(e),},
                 400,
@@ -41,6 +48,8 @@ class UserSetAPI(Resource):
     @staticmethod
     def get():
         users = service.get_users()
+        app.logger.debug(f"Fetched {len(users)} records")
+
         return {"status": "success", "data": {"users": users}}, 200
 
 
@@ -49,15 +58,23 @@ class UserAPI(Resource):
     def get(public_id):
         try:
             user = service.get_user(public_id)
+            app.logger.debug(f"Fetched {user}")
+
             return {"status": "success", "data": user}, 200
         except exceptions.UserDoesNotExistsError as e:
+            app.logger.warning(str(e))
+
             return {"status": "fail", "message": str(e)}, 404
 
     @staticmethod
     def delete(public_id):
         try:
             user = service.get_user(public_id)
+            app.logger.debug(f"Fetched {user}")
+
             service.remove_user(user.get("public_id"))
+            app.logger.debug(f"Removed {user}")
+
             return (
                 {
                     "status": "success",
@@ -66,6 +83,8 @@ class UserAPI(Resource):
                 200,
             )
         except exceptions.UserDoesNotExistsError as e:
+            app.logger.warning(str(e))
+
             return {"status": "fail", "message": str(e)}, 404
 
     @staticmethod
@@ -74,19 +93,30 @@ class UserAPI(Resource):
 
         try:
             user = service.get_user(public_id)
+            app.logger.debug(f"Fetched {user}")
+
             service.update_user(user.get("public_id"), data)
+            app.logger.debug(f"Updated {user}")
             return (
                 {"status": "success", "message": f"{public_id} was updated!"},
                 200,
             )
         except exceptions.IllegalArgumentError as e:
+            app.logger.warning(str(e))
+
             return {"status": "fail", "message": str(e)}, 400
+
         except exceptions.ForbiddenOperationError as e:
+            app.logger.warning(str(e))
+
             return (
                 {"status": "fail", "message": str(e),},
                 403,
             )
+
         except exceptions.UserDoesNotExistsError as e:
+            app.logger.warning(str(e))
+
             return {"status": "fail", "message": str(e)}, 404
 
 

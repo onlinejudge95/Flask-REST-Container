@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  users:
+  app:
     build:
       context: .
       dockerfile: dev.Dockerfile
@@ -13,12 +13,13 @@ services:
     environment:
       - FLASK_ENV=development
       - APP_SETTINGS=app.config.DevelopmentConfig
-      - DATABASE_URL=postgresql://postgres:postgres@users-db:5432/users_dev
-      - DATABASE_TEST_URL=postgresql://postgres:postgres@users-db:5432/users_test
+      - DATABASE_URL=postgresql://postgres:postgres@postgre:5432/users_dev
+      - DATABASE_TEST_URL=postgresql://postgres:postgres@postgre:5432/users_test
     depends_on:
-      - users-db
+      - postgre
+      # - elasticsearch
 
-  users-db:
+  postgre:
     build:
       context: ./app/db
       dockerfile: db.Dockerfile
@@ -27,3 +28,9 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+  #   container_name: elasticsearch
+  #   ports: ["9200:9200"]
+  #   environment:
+  #     - discovery.type=single-node

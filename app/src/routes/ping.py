@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, current_app as app
 from flask_restful import Api, Resource
 
 
@@ -9,6 +9,7 @@ api = Api(bp)
 class PingAPI(Resource):
     @staticmethod
     def get():
+        app.logger.info("received a /ping request")
         return {"status": "success", "message": "pong"}
 
 
