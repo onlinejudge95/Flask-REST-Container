@@ -9,13 +9,13 @@ done
 
 echo "PostgreSQL started"
 
-# echo "Waiting for elasticsearch..."
+echo "Waiting for elasticsearch..."
 
-# while ! nc -z elasticsearch 9200; do
-#   sleep 0.1
-# done
+while ! nc -z elasticsearch 9200; do
+  sleep 0.1
+done
 
-# echo "Elasticsearch started"
+echo "Elasticsearch started"
 
 echo "Starting python"
 
