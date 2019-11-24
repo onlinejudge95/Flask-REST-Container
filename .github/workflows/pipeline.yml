@@ -9,8 +9,6 @@ jobs:
     steps:
       - uses: "actions/checkout@v1"
 
-      - continue-on-error: false
-
       - name: "Set up Python 3.7"
         uses: "actions/setup-python@v1"
         with:
@@ -20,29 +18,3 @@ jobs:
         run: |
           pip install --upgrade pip setuptools black
           black --config pyproject.toml .
-
-  tests:
-    name: "Runs the tests using pytest"
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: ["ubuntu-latest", "windows-latest", "macOS-latest"]
-      fail-fast: true
-    steps:
-      - uses: "actions/checkout@v1"
-
-      - continue-on-error: false
-
-      - name: "Set up Python 3.7"
-        uses: "actions/setup-python@v1"
-        with:
-          python-version: 3.7
-
-      - name: "Install dependencies"
-        run: |
-          pip install --upgrade pip setuptools
-          pip install --requirement requirements.txt
-      
-      - name: "Runs tests"
-        run: |
-          pytest
