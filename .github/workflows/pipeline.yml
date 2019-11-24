@@ -1,10 +1,10 @@
-name: "Pipeline for python applications"
+name: "Pipeline action"
 
 on: [push]
 
 jobs:
   lint:
-    name: "Lints the code using psf/black"
+    name: "Code linter"
     runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@v1"
