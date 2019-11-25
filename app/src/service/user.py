@@ -27,7 +27,7 @@ def create_new_user(data):
         db.session.commit()
 
         return new_user.public_id
-    raise exc.UserExistsError(f"User with email {email} already exists")
+    raise exc.UserExistsError(email, "User with email {} already exists")
 
 
 def get_user(public_id):
@@ -49,7 +49,7 @@ def get_user(public_id):
 
     if not user:
         raise exc.UserDoesNotExistsError(
-            f"User with id {public_id} does not exists"
+            public_id, "User with id {} does not exists"
         )
 
     return user.to_json()
@@ -82,7 +82,7 @@ def remove_user(public_id):
 
     if not user:
         raise exc.UserDoesNotExistsError(
-            f"User with id {public_id} does not exists"
+            public_id, "User with id {} does not exists"
         )
 
     db.session.delete(user)
@@ -109,7 +109,7 @@ def update_user(public_id, data):
 
     if not user:
         raise exc.UserDoesNotExistsError(
-            f"User with id {public_id} does not exists"
+            public_id, "User with id {} does not exists"
         )
 
     for k in data.keys():
