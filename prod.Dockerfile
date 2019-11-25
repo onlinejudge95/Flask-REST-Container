@@ -21,4 +21,4 @@ COPY . .
 RUN adduser -D webuser
 USER webuser
 
-CMD gunicorn --bind 0.0.0.0:$PORT manage:app
+CMD gunicorn --bind 0.0.0.0:$PORT --log-config gunicorn.conf manage:app

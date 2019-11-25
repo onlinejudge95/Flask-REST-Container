@@ -2,37 +2,104 @@ version: "3.7"
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: dev.Dockerfile
+    container_name: app
     entrypoint: ["/usr/src/app/entrypoint.sh"]
-    volumes:
-      - .:/usr/src/app
     ports:
       - 5000:5000
-    environment:
-      - FLASK_ENV=development
-      - APP_SETTINGS=app.config.DevelopmentConfig
-      - DATABASE_URL=postgresql://postgres:postgres@postgre:5432/users_dev
-      - DATABASE_TEST_URL=postgresql://postgres:postgres@postgre:5432/users_test
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
     depends_on:
       - postgre
       - elasticsearch
+    environment:
+      FLASK_ENV: development
+      APP_SETTINGS: app.config.DevelopmentConfig
+      DATABASE_URL: postgresql://postgres:postgres@postgre:5432/users_dev
+      DATABASE_TEST_URL: postgresql://postgres:postgres@postgre:5432/users_test
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
 
   postgre:
-    build:
-      context: ./app/db
-      dockerfile: db.Dockerfile
+    restart: always
+    container_name: postgredb
     expose:
       - 5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    build:
+      context: ./services/postgre
+      dockerfile: postgre.Dockerfile
+    volumes:
+      - type: volume
+        source: postgredata
+        target: /pg_data
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
     container_name: elasticsearch
     ports:
       - 9200:9200
+      - 9300:9300
     environment:
-      - discovery.type=single-node
+      ELASTIC_PASSWORD: changeme
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    labels:
+      com.example.service: "elasticsearch"
+      com.example.description: "For searching and indexing log data"
+    build:
+      context: ./services/elasticsearch
+      dockerfile: elasticsearch.Dockerfile
+    volumes:
+      - type: bind
+        source: ./services/elasticsearch/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: volume
+        source: elasticsearchdata
+        target: /usr/share/elasticsearch/data/
+
+  logstash:
+    container_name: logstash
+    depends_on:
+      - elasticsearch
+    ports:
+      - 9600:9600
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    labels:
+      com.example.service: "logstash"
+      com.example.description: "For logging data"
+    build:
+      context: ./services/logstash
+      dockerfile: logstash.Dockerfile
+    volumes:
+      - type: bind
+        source: ./services/logstash/config/logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+        read_only: true
+      - type: bind
+        source: ./services/logstash/pipeline
+        target: /usr/share/logstash/pipeline
+        read_only: true
+
+  kibana:
+    container_name: kibana
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    build:
+      context: ./services/kibana/
+      dockerfile: kibana.Dockerfile
+    volumes:
+      - type: bind
+        source: ./services/kibana/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+
+volumes:
+  postgredata:
+  elasticsearchdata:
