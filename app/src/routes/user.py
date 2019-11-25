@@ -107,7 +107,7 @@ class UserView(Resource):
         except exceptions.ForbiddenOperationError as e:
             app.logger.warning(str(e))
 
-            return return e.to_json(), 403
+            return e.to_json(), 403
 
         except exceptions.UserDoesNotExistsError as e:
             app.logger.warning(str(e))
