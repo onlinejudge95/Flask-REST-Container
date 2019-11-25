@@ -11,7 +11,7 @@ bp = Blueprint("users", __name__)
 api = Api(bp)
 
 
-class UserSetAPI(Resource):
+class UserCollectionView(Resource):
     @staticmethod
     def post():
         data = request.get_json()
@@ -33,10 +33,7 @@ class UserSetAPI(Resource):
             db.session.rollback()
             return {"status": "fail", "message": "Invalid payload."}, 400
         except exceptions.UserExistsError as e:
-            return (
-                {"status": "fail", "message": str(e),},
-                400,
-            )
+            return e.to_json(), 400
 
     @staticmethod
     def get():
@@ -44,14 +41,14 @@ class UserSetAPI(Resource):
         return {"status": "success", "data": {"users": users}}, 200
 
 
-class UserAPI(Resource):
+class UserView(Resource):
     @staticmethod
     def get(public_id):
         try:
             user = service.get_user(public_id)
             return {"status": "success", "data": user}, 200
         except exceptions.UserDoesNotExistsError as e:
-            return {"status": "fail", "message": str(e)}, 404
+            return e.to_json(), 404
 
     @staticmethod
     def delete(public_id):
@@ -66,7 +63,7 @@ class UserAPI(Resource):
                 200,
             )
         except exceptions.UserDoesNotExistsError as e:
-            return {"status": "fail", "message": str(e)}, 404
+            return e.to_json(), 404
 
     @staticmethod
     def put(public_id):
@@ -80,15 +77,12 @@ class UserAPI(Resource):
                 200,
             )
         except exceptions.IllegalArgumentError as e:
-            return {"status": "fail", "message": str(e)}, 400
+            return e.to_json(), 400
         except exceptions.ForbiddenOperationError as e:
-            return (
-                {"status": "fail", "message": str(e),},
-                403,
-            )
+            return e.to_json(), 403
         except exceptions.UserDoesNotExistsError as e:
-            return {"status": "fail", "message": str(e)}, 404
+            return e.to_json(), 404
 
 
-api.add_resource(UserSetAPI, "/users")
-api.add_resource(UserAPI, "/users/<public_id>")
+api.add_resource(UserCollectionView, "/users")
+api.add_resource(UserView, "/users/<public_id>")
