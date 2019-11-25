@@ -1,19 +1,40 @@
 class BaseError(Exception):
-    def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args, **kwargs)
+    def __init__(self, message):
+        Exception.__init__(self)
+
+        self.response = {"status": "fail", "message": message}
+
+    def to_json(self):
+        return self.response
 
 
 class UserExistsError(BaseError):
-    pass
+    def __init__(self, email, message):
+        BaseError.__init__(self, message)
+        self.email = email
+
+    def to_json(self):
+        self.response["message"] = self.response["message"].format(self.email)
+        return self.response
 
 
 class UserDoesNotExistsError(BaseError):
-    pass
+    def __init__(self, public_id, message):
+        BaseError.__init__(self, message)
+        self.public_id = public_id
+
+    def to_json(self):
+        self.response["message"] = self.response["message"].format(
+            self.public_id
+        )
+        return self.response
 
 
 class ForbiddenOperationError(BaseError):
-    pass
+    def __init__(self, message):
+        BaseError.__init__(self, message)
 
 
 class IllegalArgumentError(BaseError):
-    pass
+    def __init__(self, message):
+        BaseError.__init__(self, message)

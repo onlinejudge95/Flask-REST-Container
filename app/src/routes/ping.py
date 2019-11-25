@@ -6,11 +6,11 @@ bp = Blueprint("ping", __name__)
 api = Api(bp)
 
 
-class PingAPI(Resource):
+class PingView(Resource):
     @staticmethod
     def get():
         app.logger.info("received a /ping request")
         return {"status": "success", "message": "pong"}
 
 
-api.add_resource(PingAPI, "/ping")
+api.add_resource(PingView, "/ping")
