@@ -7,7 +7,7 @@ verify_ssl = true
 black = "==19.10b0"
 
 [packages]
-flask = "==1.1.1"
+flask = "==2.2.5"
 flask-restful = "==0.3.7"
 flask-sqlalchemy = "==2.4.1"
 psycopg2-binary = "==2.8.4"
